@@ -1,52 +1,139 @@
     <!-- App Sidebar -->
     <aside class="app-sidebar no-print collapse d-lg-flex" id="sidebarMenu">
-      <div class="py-3 flex-grow-1">
-        <div class="px-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Menu Utama</div>
-        <a href="/dashboard" class="sidebar-link <%= (typeof title !== 'undefined' && title === 'Dashboard') ? 'active' : '' %>">
-          <i class="bi bi-grid-1x2"></i>
-          <span>Dashboard</span>
-        </a>
-        <a href="/transaksi-surat" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Nomor Surat')) ? 'active' : '' %>">
-          <i class="bi bi-hash"></i>
-          <span>Nomor Surat Keluar</span>
-        </a>
-        <a href="/surat-masuk" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Surat Masuk')) ? 'active' : '' %>">
-          <i class="bi bi-inbox"></i>
-          <span>Surat Masuk & Disposisi</span>
-        </a>
+      <div class="p-3 flex-grow-1">
+        
+        <!-- Navigation Section: Persuratan -->
+        <div class="px-2 pb-1.5 pt-1 text-uppercase text-muted fw-bold" style="font-size: 0.675rem; letter-spacing: 0.08em; color: #94A3B8;">
+          Menu Utama
+        </div>
+        
+        <nav class="nav flex-column gap-1 mb-3">
+          <a href="/dashboard" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title === 'Dashboard') ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-grid-1x2-fill"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Dashboard</span>
+          </a>
 
-        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Front Office & Tamu</div>
-        <a href="/tamu" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Buku Tamu')) ? 'active' : '' %>">
-          <i class="bi bi-people"></i>
-          <span>Buku Tamu</span>
-        </a>
-        <a href="/transaksi-berkas" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Berkas')) ? 'active' : '' %>">
-          <i class="bi bi-file-earmark-arrow-down"></i>
-          <span>Transaksi Berkas</span>
-        </a>
+          <a href="/transaksi-surat" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Nomor Surat')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-hash"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Nomor Surat Keluar</span>
+          </a>
 
-        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Referensi & Data</div>
-        <a href="/klasifikasi" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Klasifikasi')) ? 'active' : '' %>">
-          <i class="bi bi-folder2-open"></i>
-          <span>Kode Klasifikasi Arsip</span>
-        </a>
+          <a href="/surat-masuk" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Surat Masuk')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-inbox-fill"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Surat Masuk & Disposisi</span>
+          </a>
+        </nav>
+
+        <!-- Navigation Section: Front Office & Tamu -->
+        <div class="px-2 pb-1.5 pt-2 text-uppercase text-muted fw-bold" style="font-size: 0.675rem; letter-spacing: 0.08em; color: #94A3B8;">
+          Pelayanan Front Office
+        </div>
+
+        <nav class="nav flex-column gap-1 mb-3">
+          <a href="/tamu" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Buku Tamu')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-people-fill"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Buku Tamu</span>
+          </a>
+
+          <a href="/transaksi-berkas" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Berkas')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-folder-check"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Transaksi Berkas</span>
+          </a>
+        </nav>
+
+        <!-- Navigation Section: Referensi -->
+        <div class="px-2 pb-1.5 pt-2 text-uppercase text-muted fw-bold" style="font-size: 0.675rem; letter-spacing: 0.08em; color: #94A3B8;">
+          Referensi Arsip
+        </div>
+
+        <nav class="nav flex-column gap-1 mb-3">
+          <a href="/klasifikasi" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Klasifikasi')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-bookmarks-fill"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Kode Klasifikasi Surat</span>
+          </a>
+        </nav>
 
         <% if (user.role === 'admin') { %>
-        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Administrator</div>
-        <a href="/users" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Pengguna')) ? 'active' : '' %>">
-          <i class="bi bi-person-gear"></i>
-          <span>Manajemen Pengguna</span>
-        </a>
+        <!-- Navigation Section: Administrator -->
+        <div class="px-2 pb-1.5 pt-2 text-uppercase text-muted fw-bold" style="font-size: 0.675rem; letter-spacing: 0.08em; color: #94A3B8;">
+          Sistem
+        </div>
+
+        <nav class="nav flex-column gap-1 mb-3">
+          <a href="/users" class="sidebar-item d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-decoration-none transition <%= (typeof title !== 'undefined' && title.includes('Pengguna')) ? 'active' : '' %>">
+            <span class="icon-box d-flex align-items-center justify-content-center rounded-2" style="width: 28px; height: 28px;">
+              <i class="bi bi-gear-wide-connected"></i>
+            </span>
+            <span class="fw-semibold" style="font-size: 0.85rem;">Manajemen Pengguna</span>
+          </a>
+        </nav>
         <% } %>
+
       </div>
 
-      <!-- Quick Action Card in sidebar -->
-      <div class="p-3 border-top bg-light m-2 rounded-3 text-center">
-        <small class="d-block text-muted mb-2 fw-semibold">Pintas Penomoran</small>
-        <a href="/transaksi-surat/create" class="btn btn-sm btn-success w-100 py-1">
-          <i class="bi bi-plus-circle me-1"></i> Ambil Nomor
-        </a>
+      <!-- Quick Action Card in Bottom of Sidebar -->
+      <div class="p-3 border-top m-2 bg-gradient-soft rounded-3">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 0.75rem;">
+            <i class="bi bi-lightning-charge-fill"></i>
+          </div>
+          <span class="fw-bold text-dark small" style="font-size: 0.78rem;">Aksi Cepat</span>
+        </div>
+        <div class="d-grid gap-1.5">
+          <a href="/transaksi-surat/create" class="btn btn-sm btn-primary-custom justify-content-center py-1.5" style="font-size: 0.78rem;">
+            <i class="bi bi-plus-circle me-1"></i> Ambil Nomor Surat
+          </a>
+          <a href="/transaksi-berkas/create" class="btn btn-sm btn-outline-custom justify-content-center py-1.5" style="font-size: 0.78rem;">
+            <i class="bi bi-file-earmark-plus me-1"></i> Terima Berkas Baru
+          </a>
+        </div>
       </div>
     </aside>
+
+    <style>
+      .sidebar-item {
+        color: #475569;
+        transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .sidebar-item .icon-box {
+        background: #F1F5F9;
+        color: #64748B;
+        transition: all 0.15s ease;
+      }
+      .sidebar-item:hover {
+        background: #F8FAFC;
+        color: #0F172A;
+      }
+      .sidebar-item:hover .icon-box {
+        background: #E2E8F0;
+        color: #0F6B59;
+      }
+      .sidebar-item.active {
+        background: #EBF7F4;
+        color: #0F6B59;
+        font-weight: 700;
+      }
+      .sidebar-item.active .icon-box {
+        background: #0F6B59;
+        color: #FFFFFF;
+      }
+      .bg-gradient-soft {
+        background: linear-gradient(180deg, #F8FAFC 0%, #EBF7F4 100%);
+        border: 1px solid #D1EBE5;
+      }
+    </style>
+
     <!-- Main Content Wrapper -->
     <main class="app-content">

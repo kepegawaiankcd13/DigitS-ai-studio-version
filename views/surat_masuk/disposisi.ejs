@@ -1,127 +1,152 @@
 <%- include('../partials/header') %>
 <%- include('../partials/sidebar') %>
 
-<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+<!-- Page Header -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between pb-3 mb-4 border-bottom">
   <div>
-    <h4 class="fw-bold mb-1">Lembar Disposisi Pimpinan</h4>
-    <p class="text-muted small mb-0">Pengaturan disposisi dan instruksi tindak lanjut surat masuk</p>
+    <div class="d-flex align-items-center gap-2 mb-1">
+      <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2 py-1 rounded" style="font-size: 0.75rem;">
+        <i class="bi bi-pencil-square me-1"></i> Disposisi Pimpinan
+      </span>
+      <h4 class="fw-bold mb-0 text-dark">Lembar Disposisi Surat Masuk</h4>
+    </div>
+    <p class="text-muted small mb-0">Instruksi tindak lanjut pimpinan & penugasan staf untuk nomor agenda #<%= item.id %></p>
   </div>
-  <div class="d-flex gap-2">
-    <a href="/surat-masuk/<%= item.id %>/cetak-disposisi" target="_blank" class="btn btn-sm btn-outline-primary">
-      <i class="bi bi-printer me-1"></i> Cetak Lembar Disposisi
+  <div class="mt-3 mt-md-0 d-flex gap-2">
+    <a href="/surat-masuk/<%= item.id %>/cetak-disposisi" target="_blank" class="btn btn-sm btn-outline-custom d-inline-flex align-items-center">
+      <i class="bi bi-printer me-1.5"></i> Cetak Lembar Disposisi
     </a>
-    <a href="/surat-masuk" class="btn btn-sm btn-outline-secondary">
-      <i class="bi bi-arrow-left me-1"></i> Kembali
+    <a href="/surat-masuk" class="btn btn-sm btn-light border d-inline-flex align-items-center">
+      <i class="bi bi-arrow-left me-1.5"></i> Kembali
     </a>
   </div>
 </div>
 
 <div class="row g-4">
+  <!-- Left Side: Letter Details -->
   <div class="col-lg-5">
-    <!-- Letter Details Card -->
-    <div class="card border-0 shadow-sm rounded-3">
-      <div class="card-header bg-white py-3 border-bottom">
-        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-text text-primary me-2"></i>Rincian Surat Masuk</h6>
+    <div class="card card-modern h-100">
+      <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center gap-2">
+        <div class="rounded-circle p-1.5 text-primary" style="background: #EBF7F4;">
+          <i class="bi bi-file-earmark-text"></i>
+        </div>
+        <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.925rem;">Rincian Surat Masuk</h6>
       </div>
-      <div class="card-body p-3" style="font-size: 0.875rem;">
-        <table class="table table-sm table-borderless mb-0">
-          <tr>
-            <td class="text-muted" style="width: 120px;">No. Agenda:</td>
-            <td class="fw-bold">#<%= item.id %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">No. Surat:</td>
-            <td class="fw-bold font-monospace text-primary"><%= item.nomor_surat %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Tgl. Surat:</td>
-            <td><%= item.tgl_surat %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Tgl. Diterima:</td>
-            <td><%= item.tgl_terima %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Pengirim:</td>
-            <td class="fw-semibold"><%= item.pengirim %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Perihal:</td>
-            <td><%= item.perihal %></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Urgensi:</td>
-            <td><span class="badge badge-soft-warning"><%= item.urgensi %></span></td>
-          </tr>
-          <tr>
-            <td class="text-muted">Sifat:</td>
-            <td><span class="badge badge-soft-info"><%= item.sifat %></span></td>
-          </tr>
-          <% if (item.file_pdf) { %>
-            <tr>
-              <td class="text-muted">Berkas:</td>
-              <td>
-                <a href="/uploads/surat_masuk/<%= item.file_pdf %>" target="_blank" class="btn btn-sm btn-outline-danger py-0 px-2">
-                  <i class="bi bi-file-earmark-pdf me-1"></i>Buka PDF Surat
-                </a>
-              </td>
-            </tr>
-          <% } %>
-        </table>
+      <div class="card-body p-4">
+        <div class="mb-3">
+          <small class="text-muted d-block" style="font-size: 0.75rem;">Nomor Agenda</small>
+          <span class="badge bg-light text-dark border font-tabular px-2.5 py-1" style="font-size: 0.8rem;">
+            Agenda #<%= item.id %>
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <small class="text-muted d-block" style="font-size: 0.75rem;">Nomor Surat Resmi</small>
+          <span class="fw-bold font-monospace text-dark" style="font-size: 0.9rem;"><%= item.nomor_surat %></span>
+        </div>
+
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <small class="text-muted d-block" style="font-size: 0.75rem;">Tanggal Surat</small>
+            <span class="font-tabular text-dark fw-semibold" style="font-size: 0.825rem;"><%= item.tgl_surat %></span>
+          </div>
+          <div class="col-6">
+            <small class="text-muted d-block" style="font-size: 0.75rem;">Tanggal Diterima</small>
+            <span class="font-tabular text-dark fw-semibold" style="font-size: 0.825rem;"><%= item.tgl_terima %></span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <small class="text-muted d-block" style="font-size: 0.75rem;">Asal Pengirim / Instansi</small>
+          <span class="fw-bold text-dark d-block" style="font-size: 0.85rem;"><%= item.pengirim %></span>
+        </div>
+
+        <div class="mb-3">
+          <small class="text-muted d-block" style="font-size: 0.75rem;">Perihal Dokumen</small>
+          <div class="text-secondary fw-medium p-2.5 bg-light rounded-3" style="font-size: 0.825rem; line-height: 1.45;">
+            <%= item.perihal %>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div>
+            <small class="text-muted d-block" style="font-size: 0.72rem;">Tingkat Urgensi</small>
+            <span class="badge badge-soft-amber px-2 py-0.5 rounded"><%= item.urgensi %></span>
+          </div>
+          <div>
+            <small class="text-muted d-block" style="font-size: 0.72rem;">Sifat Surat</small>
+            <span class="badge badge-soft-blue px-2 py-0.5 rounded"><%= item.sifat %></span>
+          </div>
+        </div>
+
+        <% if (item.file_pdf) { %>
+          <div class="pt-2 border-top">
+            <a href="/uploads/surat_masuk/<%= item.file_pdf %>" target="_blank" class="btn btn-sm btn-outline-danger w-100 d-inline-flex align-items-center justify-content-center gap-1.5 py-1.5">
+              <i class="bi bi-file-earmark-pdf-fill"></i> Buka Lampiran Berkas PDF
+            </a>
+          </div>
+        <% } %>
       </div>
     </div>
   </div>
 
+  <!-- Right Side: Disposisi Form -->
   <div class="col-lg-7">
-    <!-- Disposisi Form -->
-    <div class="card border-0 shadow-sm rounded-3">
-      <div class="card-header bg-white py-3 border-bottom">
-        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-pencil-square text-success me-2"></i>Instruksi & Disposisi</h6>
+    <div class="card card-modern">
+      <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center gap-2">
+        <div class="rounded-circle p-1.5 text-success" style="background: #EBF7F4;">
+          <i class="bi bi-check2-circle"></i>
+        </div>
+        <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.925rem;">Formulir Disposisi & Petunjuk Tindak Lanjut</h6>
       </div>
+
       <div class="card-body p-4">
         <form action="/surat-masuk/<%= item.id %>/disposisi" method="POST">
           
-          <div class="mb-3">
-            <label class="form-label fw-semibold small">Tujuan Disposisi (Pejabat / Bagian)</label>
-            <div class="row g-2 mb-2">
+          <div class="mb-4">
+            <label class="form-label fw-bold text-dark small mb-2">Tujuan Disposisi (Pilih Pejabat / Seksi Terkait):</label>
+            <div class="row g-2 p-3 bg-light rounded-3 border">
               <% const tujuans = ['Kasubag Tata Usaha', 'Kasi Pelayanan SMA', 'Kasi Pelayanan SMK', 'Kasi PKLK', 'Pejabat Pembuat Komitmen (PPK)', 'Bendahara Pengeluaran', 'Kepegawaian', 'Arsiparis']; %>
               <% tujuans.forEach(t => { %>
                 <div class="col-sm-6">
                   <div class="form-check small">
                     <input class="form-check-input disposisi-chk" type="checkbox" value="<%= t %>" id="chk_<%= t.replace(/\s+/g, '_') %>"
                       <%= (item.tujuan_disposisi && item.tujuan_disposisi.includes(t)) ? 'checked' : '' %>>
-                    <label class="form-check-label" for="chk_<%= t.replace(/\s+/g, '_') %>"><%= t %></label>
+                    <label class="form-check-label text-dark fw-medium" for="chk_<%= t.replace(/\s+/g, '_') %>"><%= t %></label>
                   </div>
                 </div>
               <% }) %>
             </div>
-            <input type="text" name="tujuan_disposisi" id="tujuanDisposisiInput" class="form-control form-control-sm mt-2" 
-              placeholder="Atau ketik pejabat / staf tujuan disposisi..." value="<%= item.tujuan_disposisi || '' %>" required>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold small">Catatan / Petunjuk Instruksi Pimpinan</label>
-            <div class="d-flex gap-1 flex-wrap mb-2">
-              <button type="button" class="btn btn-sm btn-light border py-0 px-2 small" onclick="addCatatan('Tindak lanjuti segera')">+ Tindak lanjuti segera</button>
-              <button type="button" class="btn btn-sm btn-light border py-0 px-2 small" onclick="addCatatan('Untuk diketahui / pedoman')">+ Untuk diketahui</button>
-              <button type="button" class="btn btn-sm btn-light border py-0 px-2 small" onclick="addCatatan('Siapkan konsep jawaban / tanggapan')">+ Konsep jawaban</button>
-              <button type="button" class="btn btn-sm btn-light border py-0 px-2 small" onclick="addCatatan('Hadir / Wakili')">+ Hadiri / Wakili</button>
-              <button type="button" class="btn btn-sm btn-light border py-0 px-2 small" onclick="addCatatan('Arsipkan')">+ Arsipkan</button>
-            </div>
-            <textarea name="catatan_disposisi" id="catatanInput" class="form-control" rows="4" placeholder="Tulis instruksi tindak lanjut pimpinan di sini..."><%= item.catatan_disposisi || '' %></textarea>
+            <input type="text" name="tujuan_disposisi" id="tujuanDisposisiInput" class="form-control form-control-sm mt-2.5" 
+              placeholder="Atau ketik nama staf/pejabat tujuan lainnya..." value="<%= item.tujuan_disposisi || '' %>" required>
           </div>
 
           <div class="mb-4">
-            <div class="form-check form-switch">
+            <label class="form-label fw-bold text-dark small mb-1">Instruksi / Petunjuk Tindak Lanjut Pimpinan:</label>
+            <div class="d-flex gap-1.5 flex-wrap mb-2">
+              <button type="button" class="btn btn-sm btn-outline-custom py-0.5 px-2 small" onclick="addCatatan('Tindak lanjuti segera')">+ Tindak Lanjut</button>
+              <button type="button" class="btn btn-sm btn-outline-custom py-0.5 px-2 small" onclick="addCatatan('Untuk diketahui / pedoman')">+ Untuk Diketahui</button>
+              <button type="button" class="btn btn-sm btn-outline-custom py-0.5 px-2 small" onclick="addCatatan('Siapkan konsep jawaban')">+ Konsep Jawaban</button>
+              <button type="button" class="btn btn-sm btn-outline-custom py-0.5 px-2 small" onclick="addCatatan('Hadir / Wakili')">+ Hadiri / Wakili</button>
+              <button type="button" class="btn btn-sm btn-outline-custom py-0.5 px-2 small" onclick="addCatatan('Arsipkan')">+ Arsipkan</button>
+            </div>
+            <textarea name="catatan_disposisi" id="catatanInput" class="form-control" rows="4" placeholder="Tulis catatan instruksi pimpinan di sini..." required><%= item.catatan_disposisi || '' %></textarea>
+          </div>
+
+          <div class="mb-4 p-3 bg-light rounded-3 border d-flex align-items-center justify-content-between">
+            <div>
+              <span class="d-block fw-bold text-dark small">Status Disposisi Surat</span>
+              <small class="text-muted">Tandai surat ini sebagai telah selesai didisposisikan oleh pimpinan</small>
+            </div>
+            <div class="form-check form-switch fs-5 mb-0">
               <input class="form-check-input" type="checkbox" name="status_disposisi" value="1" id="switchStatus" <%= (item.status_disposisi == 1 || item.status_disposisi === true) ? 'checked' : 'checked' %>>
-              <label class="form-check-label fw-semibold small" for="switchStatus">Tandai status sudah didisposisikan</label>
             </div>
           </div>
 
-          <div class="d-flex justify-content-end gap-2">
-            <a href="/surat-masuk" class="btn btn-light">Batal</a>
-            <button type="submit" class="btn btn-success px-4">
-              <i class="bi bi-save me-1"></i> Simpan Disposisi
+          <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+            <a href="/surat-masuk" class="btn btn-light border px-3">Batal</a>
+            <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
+              <i class="bi bi-save me-1.5"></i> Simpan Disposisi
             </button>
           </div>
         </form>

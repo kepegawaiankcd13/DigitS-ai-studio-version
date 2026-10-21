@@ -1,0 +1,28 @@
+{
+  "name": "digits-ai-studio-version",
+  "version": "1.0.0",
+  "description": "DigitS - AI Studio Version: Sistem Penomoran Surat, Surat Masuk, Buku Tamu & Transaksi Berkas KCD XIII",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node app.js",
+    "start": "node app.js",
+    "build": "node -e \"console.log('Build completed successfully')\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "exceljs": "^3.4.0",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.16.0",
+    "sequelize": "^6.37.7",
+    "xlsx": "^0.18.5"
+  }
+}

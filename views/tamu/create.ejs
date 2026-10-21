@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <h4 class="fw-bold mb-1">Registrasi Tamu Baru</h4>
+    <p class="text-muted small mb-0">Formulir pencatatan tamu / perwakilan sekolah yang berkunjung ke kantor KCD XIII</p>
+  </div>
+  <a href="/tamu" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali
+  </a>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm rounded-3">
+      <div class="card-body p-4">
+        <form action="/tamu" method="POST">
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">ID Tamu (Generated)</label>
+            <input type="text" name="id_tamu" class="form-control font-monospace fw-bold bg-light" value="<%= nextId %>" readonly>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Nama Lengkap & Gelar</label>
+            <input type="text" name="nama" class="form-control" placeholder="Contoh: Ahmad Fauzi, S.Pd., M.M." required autofocus>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">NIP (Bila ASN / PPPK)</label>
+              <input type="text" name="nip" class="form-control" placeholder="Contoh: 198501012010011001 atau tanda -">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Nomor Kontak / WhatsApp</label>
+              <input type="text" name="no_kontak" class="form-control" placeholder="Contoh: 081234567890" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Jabatan</label>
+              <input type="text" name="jabatan" class="form-control" placeholder="Contoh: Kepala Sekolah / Kasubag TU / Guru">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Pekerjaan / Status</label>
+              <select name="pekerjaan" class="form-select">
+                <option value="ASN" selected>ASN / PNS</option>
+                <option value="PPPK">PPPK</option>
+                <option value="Guru Non-ASN">Guru Non-ASN</option>
+                <option value="Staff Tata Usaha">Staff Tata Usaha</option>
+                <option value="Swasta / Perusahaan">Swasta / Perusahaan</option>
+                <option value="Masyarakat Umum / Lainnya">Masyarakat Umum / Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold small">Asal Unit Kerja / Sekolah / Instansi</label>
+            <input type="text" name="unit_kerja" class="form-control" placeholder="Contoh: SMAN 1 Ciamis / SMKN 1 Banjar" required>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/tamu" class="btn btn-light">Batal</a>
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-person-check me-1"></i> Daftarkan Tamu
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <h4 class="fw-bold mb-1">Edit Surat Masuk (Agenda #<%= item.id %>)</h4>
+    <p class="text-muted small mb-0">Perbarui rincian metadata surat masuk</p>
+  </div>
+  <a href="/surat-masuk" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-3">
+  <div class="card-body p-4">
+    <form action="/surat-masuk/<%= item.id %>/edit" method="POST" enctype="multipart/form-data">
+      
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold small">Tanggal Diterima</label>
+          <input type="date" name="tgl_terima" class="form-control" value="<%= item.tgl_terima %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold small">Tanggal Surat</label>
+          <input type="date" name="tgl_surat" class="form-control" value="<%= item.tgl_surat %>" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Nomor Surat Asli</label>
+        <input type="text" name="nomor_surat" class="form-control" value="<%= item.nomor_surat %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Asal / Instansi Pengirim</label>
+        <input type="text" name="pengirim" class="form-control" value="<%= item.pengirim %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Perihal / Isi Ringkas Surat</label>
+        <textarea name="perihal" class="form-control" rows="3" required><%= item.perihal %></textarea>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Tanggal Pelaksanaan (Bila Ada)</label>
+          <input type="text" name="tgl_pelaksanaan" class="form-control" value="<%= item.tgl_pelaksanaan || '' %>">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Tingkat Urgensi</label>
+          <select name="urgensi" class="form-select">
+            <option value="Biasa" <%= item.urgensi === 'Biasa' ? 'selected' : '' %>>Biasa</option>
+            <option value="Penting" <%= item.urgensi === 'Penting' ? 'selected' : '' %>>Penting</option>
+            <option value="Segera" <%= item.urgensi === 'Segera' ? 'selected' : '' %>>Segera</option>
+            <option value="Amat Segera" <%= item.urgensi === 'Amat Segera' ? 'selected' : '' %>>Amat Segera</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Sifat Surat</label>
+          <select name="sifat" class="form-select">
+            <option value="Biasa" <%= item.sifat === 'Biasa' ? 'selected' : '' %>>Biasa</option>
+            <option value="Penting" <%= item.sifat === 'Penting' ? 'selected' : '' %>>Penting</option>
+            <option value="Konfidential" <%= item.sifat === 'Konfidential' ? 'selected' : '' %>>Konfidential</option>
+            <option value="Rahasia" <%= item.sifat === 'Rahasia' ? 'selected' : '' %>>Rahasia</option>
+            <option value="Sangat Rahasia" <%= item.sifat === 'Sangat Rahasia' ? 'selected' : '' %>>Sangat Rahasia</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold small">Ganti / Upload Berkas PDF Baru</label>
+        <% if (item.file_pdf) { %>
+          <div class="mb-2">
+            <span class="badge badge-soft-success"><i class="bi bi-file-earmark-check me-1"></i>File saat ini: <%= item.file_pdf %></span>
+            <a href="/uploads/surat_masuk/<%= item.file_pdf %>" target="_blank" class="small ms-2 text-decoration-none text-danger"><i class="bi bi-eye"></i> Lihat PDF</a>
+          </div>
+        <% } %>
+        <input type="file" name="file_pdf" class="form-control" accept="application/pdf">
+      </div>
+
+      <hr class="my-4">
+
+      <div class="d-flex justify-content-end gap-2">
+        <a href="/surat-masuk" class="btn btn-light">Batal</a>
+        <button type="submit" class="btn btn-success px-4">
+          <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

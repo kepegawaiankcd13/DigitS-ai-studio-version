@@ -1,0 +1,52 @@
+    <!-- App Sidebar -->
+    <aside class="app-sidebar no-print collapse d-lg-flex" id="sidebarMenu">
+      <div class="py-3 flex-grow-1">
+        <div class="px-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Menu Utama</div>
+        <a href="/dashboard" class="sidebar-link <%= (typeof title !== 'undefined' && title === 'Dashboard') ? 'active' : '' %>">
+          <i class="bi bi-grid-1x2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="/transaksi-surat" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Nomor Surat')) ? 'active' : '' %>">
+          <i class="bi bi-hash"></i>
+          <span>Nomor Surat Keluar</span>
+        </a>
+        <a href="/surat-masuk" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Surat Masuk')) ? 'active' : '' %>">
+          <i class="bi bi-inbox"></i>
+          <span>Surat Masuk & Disposisi</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Front Office & Tamu</div>
+        <a href="/tamu" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Buku Tamu')) ? 'active' : '' %>">
+          <i class="bi bi-people"></i>
+          <span>Buku Tamu</span>
+        </a>
+        <a href="/transaksi-berkas" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Berkas')) ? 'active' : '' %>">
+          <i class="bi bi-file-earmark-arrow-down"></i>
+          <span>Transaksi Berkas</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Referensi & Data</div>
+        <a href="/klasifikasi" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Klasifikasi')) ? 'active' : '' %>">
+          <i class="bi bi-folder2-open"></i>
+          <span>Kode Klasifikasi Arsip</span>
+        </a>
+
+        <% if (user.role === 'admin') { %>
+        <div class="px-3 pt-3 pb-2 text-uppercase text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Administrator</div>
+        <a href="/users" class="sidebar-link <%= (typeof title !== 'undefined' && title.includes('Pengguna')) ? 'active' : '' %>">
+          <i class="bi bi-person-gear"></i>
+          <span>Manajemen Pengguna</span>
+        </a>
+        <% } %>
+      </div>
+
+      <!-- Quick Action Card in sidebar -->
+      <div class="p-3 border-top bg-light m-2 rounded-3 text-center">
+        <small class="d-block text-muted mb-2 fw-semibold">Pintas Penomoran</small>
+        <a href="/transaksi-surat/create" class="btn btn-sm btn-success w-100 py-1">
+          <i class="bi bi-plus-circle me-1"></i> Ambil Nomor
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content Wrapper -->
+    <main class="app-content">

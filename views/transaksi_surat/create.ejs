@@ -1,0 +1,203 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <h4 class="fw-bold mb-1">Ambil Nomor Surat Baru</h4>
+    <p class="text-muted small mb-0">Formulir registrasi dan penomoran surat keluar resmi</p>
+  </div>
+  <a href="/transaksi-surat" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali
+  </a>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm rounded-3">
+      <div class="card-body p-4">
+        <form action="/transaksi-surat" method="POST" enctype="multipart/form-data">
+          
+          <div class="p-3 bg-light rounded-3 mb-4 border text-center">
+            <span class="text-muted small d-block">Estimasi Nomor Urut:</span>
+            <span class="fs-2 fw-bold text-success font-monospace" id="previewNomorUrut"><%= String(nextUrut).padStart(4, '0') %></span>
+            <div class="mt-2 text-dark font-monospace fw-semibold" id="previewNomorLengkap" style="font-size: 1.1rem;">
+              <%= String(nextUrut).padStart(4, '0') %>/.../KCD XIII
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Mode Penomoran</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="mode_penomoran" id="modeAktif" value="Aktif" checked onchange="toggleMode()">
+                <label class="form-check-label small" for="modeAktif">
+                  <strong>Pakai Sekarang (Aktif)</strong>
+                  <div class="text-muted" style="font-size: 0.75rem;">Lengkapi klasifikasi dan perihal sekarang</div>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="mode_penomoran" id="modeBooking" value="Booking" onchange="toggleMode()">
+                <label class="form-check-label small" for="modeBooking">
+                  <strong>Booking Nomor Saja</strong>
+                  <div class="text-muted" style="font-size: 0.75rem;">Nomor dipesan terlebih dahulu untuk dipakai nanti</div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Jenis Surat</label>
+              <select name="jenisId" id="jenisId" class="form-select" required>
+                <% jenisSurats.forEach(j => { %>
+                  <option value="<%= j.id %>" data-kode="<%= j.kode_jenis %>"><%= j.nama_jenis %> (<%= j.kode_jenis %>)</option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Unit Kerja Penerbit</label>
+              <select name="unitId" id="unitId" class="form-select" required onchange="updatePreview()">
+                <% unitKerjas.forEach(u => { %>
+                  <option value="<%= u.id %>" data-kode="<%= u.kode_unit %>"><%= u.nama_unit %> (<%= u.kode_unit %>)</option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Tanggal Surat</label>
+            <input type="date" name="tanggal_nomor" class="form-control" value="<%= defaultTanggal %>" required>
+          </div>
+
+          <!-- Section for Aktif Details -->
+          <div id="sectionAktif">
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Cari Kode Klasifikasi Arsip</label>
+              <input type="text" id="klasSearchInput" class="form-control" placeholder="Ketik kode (misal: HM.01, TU.04) atau nama perihal klasifikasi...">
+              <input type="hidden" name="klasifikasiId" id="klasifikasiId">
+              <div id="klasSearchResult" class="list-group mt-1 shadow-sm border rounded-2" style="max-height: 180px; overflow-y: auto; display: none;"></div>
+              <div id="klasSelectedBox" class="alert alert-success py-2 px-3 small mt-2 d-none">
+                <i class="bi bi-check-circle-fill me-1"></i> <span id="klasSelectedText"></span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Perihal Surat Keluar</label>
+              <textarea name="perihal" id="perihalInput" class="form-control" rows="3" placeholder="Contoh: Undangan Rapat Koordinasi Kepala SMA/SMK se-KCD XIII"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Upload Berkas PDF (Opsional)</label>
+              <input type="file" name="file_pdf" class="form-control" accept="application/pdf">
+              <div class="form-text small">Unggah dokumen surat yang telah ditandatangani bila sudah ada.</div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/transaksi-surat" class="btn btn-light">Batal</a>
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-check2-circle me-1"></i> Simpan & Terbitkan Nomor
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm rounded-3 bg-light">
+      <div class="card-body p-3">
+        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-info-circle text-primary me-1"></i> Format Penomoran</h6>
+        <p class="small text-muted mb-2">Penomoran surat Cabang Dinas Pendidikan Wilayah XIII mengikuti kaidah tata naskah dinas Provinsi Jawa Barat:</p>
+        <div class="p-2 bg-white rounded border small font-monospace mb-3">
+          [No Urut]/[Kode Klasifikasi]/[Unit Kerja]
+        </div>
+        <ul class="small text-muted ps-3 mb-0">
+          <li><strong>No Urut:</strong> 4 digit nomor urut berkas per tahun anggaran.</li>
+          <li><strong>Kode Klasifikasi:</strong> Sesuai Permendagri / Jadwal Retensi Arsip (contoh: <code>HM.01</code>, <code>TU.04</code>).</li>
+          <li><strong>Unit Kerja:</strong> <code>KCD XIII</code> untuk Cabang Dinas Wilayah XIII.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedKodeKlas = 'SK';
+  const noUrut = '<%= String(nextUrut).padStart(4, "0") %>';
+
+  function updatePreview() {
+    const unitSelect = document.getElementById('unitId');
+    const unitKode = unitSelect.options[unitSelect.selectedIndex]?.dataset.kode || 'KCD XIII';
+    const isBooking = document.getElementById('modeBooking').checked;
+
+    if (isBooking) {
+      document.getElementById('previewNomorLengkap').textContent = noUrut + ' (Booking)';
+    } else {
+      document.getElementById('previewNomorLengkap').textContent = `${noUrut}/${selectedKodeKlas}/${unitKode}`;
+    }
+  }
+
+  function toggleMode() {
+    const isBooking = document.getElementById('modeBooking').checked;
+    const sec = document.getElementById('sectionAktif');
+    if (isBooking) {
+      sec.style.opacity = '0.4';
+      document.getElementById('perihalInput').required = false;
+    } else {
+      sec.style.opacity = '1';
+      document.getElementById('perihalInput').required = true;
+    }
+    updatePreview();
+  }
+
+  const klasInput = document.getElementById('klasSearchInput');
+  const resultBox = document.getElementById('klasSearchResult');
+
+  let debounceTimer;
+  klasInput.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    const q = this.value.trim();
+    if (q.length < 2) {
+      resultBox.style.display = 'none';
+      return;
+    }
+
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/klasifikasi/search?q=' + encodeURIComponent(q));
+        const list = await res.json();
+        resultBox.innerHTML = '';
+        if (list.length === 0) {
+          resultBox.innerHTML = '<div class="list-group-item small text-muted">Tidak ditemukan</div>';
+        } else {
+          list.forEach(k => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'list-group-item list-group-item-action py-2 text-start small';
+            btn.innerHTML = `<strong>${k.kode}</strong> - ${k.nama}`;
+            btn.onclick = () => {
+              document.getElementById('klasifikasiId').value = k.id;
+              selectedKodeKlas = k.kode;
+              document.getElementById('klasSelectedText').textContent = `${k.kode} - ${k.nama}`;
+              document.getElementById('klasSelectedBox').classList.remove('d-none');
+              resultBox.style.display = 'none';
+              klasInput.value = `${k.kode} - ${k.nama}`;
+              updatePreview();
+            };
+            resultBox.appendChild(btn);
+          });
+        }
+        resultBox.style.display = 'block';
+      } catch (e) {
+        console.error(e);
+      }
+    }, 250);
+  });
+
+  updatePreview();
+</script>
+
+<%- include('../partials/footer') %>

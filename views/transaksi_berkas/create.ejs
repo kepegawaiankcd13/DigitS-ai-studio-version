@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <h4 class="fw-bold mb-1">Penerimaan Berkas Tamu Baru</h4>
+    <p class="text-muted small mb-0">Catat penyerahan berkas fisik dari tamu/pengunjung ke Cabang Dinas Pendidikan</p>
+  </div>
+  <a href="/transaksi-berkas" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali
+  </a>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm rounded-3">
+      <div class="card-body p-4">
+        <form action="/transaksi-berkas" method="POST">
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label class="form-label fw-semibold small mb-0">Pilih Tamu Penyerah Berkas</label>
+              <a href="/tamu/create" class="small text-decoration-none text-success">
+                <i class="bi bi-person-plus me-1"></i> Tamu Belum Terdaftar? Klik Disini
+              </a>
+            </div>
+            <select name="tamuId" class="form-select" required>
+              <option value="">-- Pilih Tamu Terdaftar --</option>
+              <% tamus.forEach(t => { %>
+                <option value="<%= t.id %>" <%= String(selectedTamuId) === String(t.id) ? 'selected' : '' %>>
+                  <%= t.nama %> (<%= t.unit_kerja %>) - <%= t.id_tamu %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Tanggal Penyerahan Berkas</label>
+              <input type="date" name="tgl_transaksi" class="form-control" value="<%= today %>" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Tujuan Bagian / Seksi</label>
+              <select name="tujuan" class="form-select" required>
+                <option value="Kepegawaian" selected>Kepegawaian</option>
+                <option value="Bagian SMA">Bagian SMA</option>
+                <option value="Bagian SMK">Bagian SMK</option>
+                <option value="Bagian PKLK">Bagian PKLK</option>
+                <option value="Aset">Aset / Sarana Prasarana</option>
+                <option value="Keuangan">Keuangan</option>
+                <option value="Tata Usaha">Tata Usaha</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Perihal / Rincian Berkas yang Diserahkan</label>
+            <textarea name="perihal" class="form-control" rows="4" placeholder="Contoh: Berkas Usulan Pengajuan Kenaikan Gaji Berkala (KGB) TMT Oktober 2026 sebanyak 5 orang" required></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold small">Nama Petugas Penerima (Front Office)</label>
+            <input type="text" name="penerima" class="form-control" value="<%= penerimaDefault %>" required>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/transaksi-berkas" class="btn btn-light">Batal</a>
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-check2-circle me-1"></i> Simpan Berkas & Terbitkan Tanda Terima
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

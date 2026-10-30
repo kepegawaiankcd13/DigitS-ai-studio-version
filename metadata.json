@@ -1,0 +1,8 @@
+{
+  "name": "DigitS - Sistem Penomoran Surat & Persuratan KCD XIII",
+  "description": "Sistem Informasi Penomoran Surat Keluar, Pencatatan Surat Masuk & Lembar Disposisi, Buku Tamu Front Office, dan Transaksi Berkas - Cabang Dinas Pendidikan Wilayah XIII Provinsi Jawa Barat",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

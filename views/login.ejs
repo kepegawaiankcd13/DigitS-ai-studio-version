@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk | DigitS - Cabang Dinas Pendidikan Wilayah XIII</title>
+  <link rel="icon" type="image/png" href="/images/logo-jabar.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(15, 107, 89, 0.92), rgba(10, 75, 62, 0.95)), url('/images/bg.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+    }
+    .login-header {
+      background: #F8FAF9;
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .login-body {
+      padding: 2rem;
+    }
+    .btn-primary-custom {
+      background-color: #0F6B59;
+      border-color: #0F6B59;
+      color: white;
+      font-weight: 600;
+      padding: 0.7rem;
+      border-radius: 8px;
+    }
+    .btn-primary-custom:hover {
+      background-color: #0A4B3E;
+      border-color: #0A4B3E;
+      color: white;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: #0F6B59;
+      box-shadow: 0 0 0 0.25rem rgba(15, 107, 89, 0.25);
+    }
+    .quick-account-btn {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .quick-account-btn:hover {
+      background: #E6F4F1;
+      border-color: #0F6B59;
+      color: #0F6B59;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-header">
+      <img src="/images/logo-jabar.png" alt="Logo Jawa Barat" style="height: 60px; margin-bottom: 0.75rem;" onerror="this.style.display='none'">
+      <h4 class="fw-bold mb-1 text-dark">DigitS</h4>
+      <p class="text-muted small mb-0">Sistem Informasi Persuratan & Buku Tamu<br><strong>Cabang Dinas Pendidikan Wilayah XIII</strong></p>
+    </div>
+
+    <div class="login-body">
+      <!-- Error Alert Box -->
+      <div id="errorAlert" class="alert alert-danger py-2 px-3 small align-items-center mb-3 <%= error ? 'd-flex' : 'd-none' %>">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-6"></i>
+        <div id="errorMessage"><%= error || '' %></div>
+      </div>
+
+      <form id="loginForm" action="/login" method="POST">
+        <div class="mb-3">
+          <label class="form-label small fw-semibold text-secondary">Username</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+            <input type="text" id="usernameInput" name="username" class="form-control border-start-0" placeholder="Masukkan username" required autofocus>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small fw-semibold text-secondary">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+            <input type="password" id="passwordInput" name="password" class="form-control border-start-0" placeholder="Masukkan password" required>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label small fw-semibold text-secondary">Tahun Anggaran / Arsip</label>
+          <select name="tahun" class="form-select">
+            <option value="2026" <%= tahun == '2026' ? 'selected' : '' %>>Tahun 2026 (Aktif)</option>
+            <option value="2025" <%= tahun == '2025' ? 'selected' : '' %>>Tahun 2025</option>
+            <option value="2027" <%= tahun == '2027' ? 'selected' : '' %>>Tahun 2027</option>
+          </select>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn btn-primary-custom w-100 mb-3">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Masuk ke Sistem
+        </button>
+      </form>
+
+      <!-- Quick Login Demo Buttons -->
+      <div class="mt-4 pt-3 border-top text-center">
+        <small class="text-muted d-block mb-2 fw-semibold">Pilih Akun Cepat:</small>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+          <button type="button" class="quick-account-btn" onclick="fillForm('admin', '123')">
+            <i class="bi bi-shield-check text-success"></i> <strong>Admin</strong> (admin)
+          </button>
+          <button type="button" class="quick-account-btn" onclick="fillForm('lisna', 'lisna123')">
+            <i class="bi bi-person text-primary"></i> <strong>Front Office</strong> (lisna)
+          </button>
+          <button type="button" class="quick-account-btn" onclick="fillForm('user2', '123')">
+            <i class="bi bi-envelope text-warning"></i> <strong>Persuratan</strong> (user2)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function fillForm(user, pass) {
+      document.getElementById('usernameInput').value = user;
+      document.getElementById('passwordInput').value = pass;
+      document.getElementById('errorAlert').classList.add('d-none');
+    }
+
+    // Check if token already exists in storage and redirect
+    const existingToken = sessionStorage.getItem('digits_auth') || localStorage.getItem('digits_auth');
+    if (existingToken) {
+      // Verify token
+      fetch('/dashboard?auth=' + encodeURIComponent(existingToken), { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            window.location.href = '/dashboard?auth=' + encodeURIComponent(existingToken);
+          } else {
+            sessionStorage.removeItem('digits_auth');
+            localStorage.removeItem('digits_auth');
+          }
+        }).catch(() => {});
+    }
+
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorAlert = document.getElementById('errorAlert');
+    const errorMessage = document.getElementById('errorMessage');
+
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memverifikasi...';
+      errorAlert.classList.add('d-none');
+
+      const formData = new FormData(this);
+      const searchParams = new URLSearchParams(formData);
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+          },
+          body: searchParams
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success && result.redirect) {
+          if (result.token) {
+            sessionStorage.setItem('digits_auth', result.token);
+            localStorage.setItem('digits_auth', result.token);
+          }
+          loginBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i> Berhasil! Membuka...';
+          window.location.href = result.redirect;
+        } else {
+          errorMessage.textContent = result.error || 'Username atau Password salah!';
+          errorAlert.classList.remove('d-none');
+          errorAlert.classList.add('d-flex');
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Masuk ke Sistem';
+        }
+      } catch (err) {
+        console.warn('Fetch login failed, falling back to standard submit:', err);
+        // Normal form fallback
+        loginForm.submit();
+      }
+    });
+  </script>
+</body>
+</html>

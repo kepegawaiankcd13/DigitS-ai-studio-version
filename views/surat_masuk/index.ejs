@@ -1,0 +1,198 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<!-- Page Header -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <div class="d-flex align-items-center gap-2 mb-1">
+      <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2 py-1 rounded" style="font-size: 0.75rem;">
+        <i class="bi bi-inbox-fill me-1"></i> Tata Usaha & Kearsipan
+      </span>
+      <h4 class="fw-bold mb-0 text-dark">Buku Agenda Surat Masuk</h4>
+    </div>
+    <p class="text-muted small mb-0">Pencatatan naskah dinas masuk, lembar disposisi pimpinan, dan pengarsipan digital</p>
+  </div>
+  <div class="mt-3 mt-md-0 d-flex gap-2">
+    <a href="/surat-masuk/export" class="btn btn-sm btn-outline-custom d-inline-flex align-items-center">
+      <i class="bi bi-file-earmark-excel text-success me-1.5"></i> Ekspor Excel
+    </a>
+    <a href="/surat-masuk/create" class="btn btn-sm btn-primary-custom d-inline-flex align-items-center shadow-sm">
+      <i class="bi bi-plus-circle me-1.5"></i> Catat Surat Masuk
+    </a>
+  </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="card card-modern mb-4">
+  <div class="card-body p-3">
+    <form action="/surat-masuk" method="GET" class="row g-2 align-items-center">
+      <div class="col-md-5">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-search"></i></span>
+          <input type="text" name="search" class="form-control border-start-0" placeholder="Cari nomor surat, pengirim, atau perihal..." value="<%= search %>">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select name="status_disposisi" class="form-select form-select-sm" onchange="this.form.submit()">
+          <option value="">Semua Status Disposisi</option>
+          <option value="1" <%= statusDisposisi === '1' ? 'selected' : '' %>>Sudah Didisposisi</option>
+          <option value="0" <%= statusDisposisi === '0' ? 'selected' : '' %>>Belum Didisposisi</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="urgensi" class="form-select form-select-sm" onchange="this.form.submit()">
+          <option value="">Semua Tingkat Urgensi</option>
+          <option value="Amat Segera" <%= urgensi === 'Amat Segera' ? 'selected' : '' %>>Amat Segera</option>
+          <option value="Segera" <%= urgensi === 'Segera' ? 'selected' : '' %>>Segera</option>
+          <option value="Penting" <%= urgensi === 'Penting' ? 'selected' : '' %>>Penting</option>
+          <option value="Biasa" <%= urgensi === 'Biasa' ? 'selected' : '' %>>Biasa</option>
+        </select>
+      </div>
+      <div class="col-md-1 d-flex gap-1">
+        <button type="submit" class="btn btn-sm btn-dark w-100 fw-semibold">
+          <i class="bi bi-funnel"></i>
+        </button>
+        <% if (search || statusDisposisi || urgensi) { %>
+          <a href="/surat-masuk" class="btn btn-sm btn-outline-secondary" title="Reset Filter">
+            <i class="bi bi-x-circle"></i>
+          </a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Table Card -->
+<div class="card card-modern overflow-hidden">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-modern align-middle mb-0">
+        <thead>
+          <tr>
+            <th class="ps-3" style="width: 70px;">Agenda</th>
+            <th style="width: 100px;">Tgl Terima</th>
+            <th>Nomor & Tgl Surat</th>
+            <th>Pengirim & Perihal</th>
+            <th style="width: 120px;">Urgensi</th>
+            <th style="width: 130px;">Disposisi</th>
+            <th style="width: 80px;">Berkas</th>
+            <th class="text-end pe-3" style="width: 140px;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (items && items.length > 0) { %>
+            <% items.forEach(s => { %>
+              <tr>
+                <td class="ps-3">
+                  <span class="badge bg-light text-dark border font-tabular" style="font-size: 0.725rem;">
+                    #<%= s.id %>
+                  </span>
+                </td>
+                <td class="font-tabular fw-semibold text-secondary" style="font-size: 0.8rem;">
+                  <%= s.tgl_terima %>
+                </td>
+                <td>
+                  <div class="fw-bold font-monospace text-dark" style="font-size: 0.825rem;"><%= s.nomor_surat %></div>
+                  <small class="text-muted font-tabular" style="font-size: 0.725rem;"><i class="bi bi-calendar-event me-1"></i><%= s.tgl_surat %></small>
+                </td>
+                <td>
+                  <div class="fw-bold text-dark text-truncate" style="max-width: 300px; font-size: 0.825rem;" title="<%= s.pengirim %>">
+                    <%= s.pengirim %>
+                  </div>
+                  <div class="text-muted small text-truncate" style="max-width: 300px; font-size: 0.775rem;" title="<%= s.perihal %>">
+                    <%= s.perihal %>
+                  </div>
+                  <% if (s.tgl_pelaksanaan) { %>
+                    <small class="text-primary d-block mt-0.5 font-tabular" style="font-size: 0.7rem;">
+                      <i class="bi bi-clock me-1"></i>Pelaksanaan: <%= s.tgl_pelaksanaan %>
+                    </small>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (s.urgensi === 'Amat Segera') { %>
+                    <span class="badge badge-soft-rose px-2 py-0.5 rounded" style="font-size: 0.7rem;">Amat Segera</span>
+                  <% } else if (s.urgensi === 'Segera' || s.urgensi === 'Penting') { %>
+                    <span class="badge badge-soft-amber px-2 py-0.5 rounded" style="font-size: 0.7rem;"><%= s.urgensi %></span>
+                  <% } else { %>
+                    <span class="badge badge-soft-slate px-2 py-0.5 rounded" style="font-size: 0.7rem;">Biasa</span>
+                  <% } %>
+                  <% if (s.sifat) { %>
+                    <small class="d-block text-muted mt-0.5" style="font-size: 0.7rem;"><%= s.sifat %></small>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (s.status_disposisi == 1 || s.status_disposisi === true) { %>
+                    <span class="badge badge-soft-emerald px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">
+                      <i class="bi bi-check-circle-fill me-1"></i>Sudah
+                    </span>
+                    <% if (s.tujuan_disposisi) { %>
+                      <small class="d-block text-muted text-truncate mt-0.5" style="max-width: 120px; font-size: 0.7rem;" title="<%= s.tujuan_disposisi %>">
+                        <%= s.tujuan_disposisi %>
+                      </small>
+                    <% } %>
+                  <% } else { %>
+                    <span class="badge badge-soft-amber px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">
+                      <i class="bi bi-clock-fill me-1"></i>Menunggu
+                    </span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (s.file_pdf) { %>
+                    <a href="/uploads/surat_masuk/<%= s.file_pdf %>" target="_blank" class="btn btn-sm btn-outline-danger py-0.5 px-2 d-inline-flex align-items-center gap-1 shadow-2xs" style="font-size: 0.725rem;" title="Lihat Berkas PDF">
+                      <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+                    </a>
+                  <% } else { %>
+                    <span class="text-muted small">-</span>
+                  <% } %>
+                </td>
+                <td class="text-end pe-3 text-nowrap">
+                  <div class="btn-group btn-group-sm">
+                    <a href="/surat-masuk/<%= s.id %>/disposisi" class="btn btn-outline-primary py-1 px-2" title="Kelola Disposisi">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="/surat-masuk/<%= s.id %>/cetak-disposisi" target="_blank" class="btn btn-outline-secondary py-1 px-2" title="Cetak Lembar Disposisi Resmi">
+                      <i class="bi bi-printer"></i>
+                    </a>
+                    <a href="/surat-masuk/<%= s.id %>/edit" class="btn btn-outline-dark py-1 px-2" title="Ubah Data Surat">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <form action="/surat-masuk/<%= s.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Hapus surat masuk agenda <%= s.id %>?')">
+                      <button type="submit" class="btn btn-outline-danger py-1 px-2" title="Hapus"><i class="bi bi-trash"></i></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="8" class="text-center text-muted py-5">
+                <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary opacity-50"></i>
+                Tidak ada data surat masuk yang sesuai kriteria pencarian.
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+      <div class="d-flex align-items-center justify-content-between p-3 border-top">
+        <small class="text-muted">Halaman <%= currentPage %> dari <%= totalPages %> (Total <%= totalCount %> naskah surat masuk)</small>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="/surat-masuk?page=<%= currentPage - 1 %>&search=<%= search %>&status_disposisi=<%= statusDisposisi %>&urgensi=<%= urgensi %>">Sebelumnya</a>
+          </li>
+          <li class="page-item active">
+            <span class="page-link bg-success border-success"><%= currentPage %></span>
+          </li>
+          <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="/surat-masuk?page=<%= currentPage + 1 %>&search=<%= search %>&status_disposisi=<%= statusDisposisi %>&urgensi=<%= urgensi %>">Selanjutnya</a>
+          </li>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

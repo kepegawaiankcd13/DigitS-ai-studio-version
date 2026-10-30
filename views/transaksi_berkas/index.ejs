@@ -1,0 +1,162 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<!-- Page Header -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <div class="d-flex align-items-center gap-2 mb-1">
+      <span class="badge bg-success bg-opacity-10 text-success fw-bold px-2 py-1 rounded" style="font-size: 0.75rem;">
+        <i class="bi bi-folder-check me-1"></i> Front Office
+      </span>
+      <h4 class="fw-bold mb-0 text-dark">Transaksi Berkas Masuk</h4>
+    </div>
+    <p class="text-muted small mb-0">Pencatatan penyerahan berkas fisik dari tamu/sekolah & cetak tanda terima 2 rangkap (F4 Portrait)</p>
+  </div>
+  <div class="mt-3 mt-md-0 d-flex gap-2">
+    <a href="/transaksi-berkas/create" class="btn btn-sm btn-primary-custom d-inline-flex align-items-center shadow-sm">
+      <i class="bi bi-file-earmark-plus-fill me-1"></i> Terima Berkas Baru
+    </a>
+  </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="card border-0 shadow-sm rounded-3 mb-4">
+  <div class="card-body p-3">
+    <form action="/transaksi-berkas" method="GET" class="row g-2 align-items-center">
+      <div class="col-md-6">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-search"></i></span>
+          <input type="text" name="search" class="form-control border-start-0" placeholder="Cari nama tamu, perihal berkas, instansi, atau penerima..." value="<%= search %>">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <select name="tujuan" class="form-select form-select-sm" onchange="this.form.submit()">
+          <option value="">Semua Bagian / Unit Tujuan</option>
+          <option value="Kepegawaian" <%= tujuan === 'Kepegawaian' ? 'selected' : '' %>>Kepegawaian</option>
+          <option value="Bagian SMA" <%= tujuan === 'Bagian SMA' ? 'selected' : '' %>>Bagian SMA</option>
+          <option value="Bagian SMK" <%= tujuan === 'Bagian SMK' ? 'selected' : '' %>>Bagian SMK</option>
+          <option value="Bagian PKLK" <%= tujuan === 'Bagian PKLK' ? 'selected' : '' %>>Bagian PKLK</option>
+          <option value="Aset" <%= tujuan === 'Aset' ? 'selected' : '' %>>Aset</option>
+          <option value="Keuangan" <%= tujuan === 'Keuangan' ? 'selected' : '' %>>Keuangan</option>
+          <option value="Lainnya" <%= tujuan === 'Lainnya' ? 'selected' : '' %>>Lainnya</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex gap-1">
+        <button type="submit" class="btn btn-sm btn-dark w-100 fw-semibold">
+          <i class="bi bi-funnel me-1"></i> Filter
+        </button>
+        <% if (search || tujuan) { %>
+          <a href="/transaksi-berkas" class="btn btn-sm btn-outline-secondary" title="Reset Filter">
+            <i class="bi bi-x-circle"></i>
+          </a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Data Table -->
+<div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" style="font-size: 0.875rem;">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-3" style="width: 110px;">No. Reg / Tgl</th>
+            <th>Tamu / Asal Instansi</th>
+            <th>Perihal / Dokumen Berkas</th>
+            <th style="width: 140px;">Tujuan Bagian</th>
+            <th style="width: 150px;">Penerima FO</th>
+            <th class="text-end pe-3" style="width: 130px;">Cetak & Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (items && items.length > 0) { %>
+            <% items.forEach(b => { %>
+              <tr>
+                <td class="ps-3">
+                  <span class="badge bg-light text-dark border font-monospace" style="font-size: 0.725rem;">
+                    TRB-<%= String(b.id).padStart(5, '0') %>
+                  </span>
+                  <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                    <%= String(b.tgl_transaksi || '').substring(0, 10) %>
+                  </div>
+                </td>
+                <td>
+                  <% if (b.Tamu) { %>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 0.8rem; font-weight: 700;">
+                        <%= b.Tamu.nama ? b.Tamu.nama.charAt(0).toUpperCase() : 'T' %>
+                      </div>
+                      <div>
+                        <a href="/tamu/<%= b.Tamu.id %>" class="fw-bold text-dark text-decoration-none d-block">
+                          <%= b.Tamu.nama %>
+                        </a>
+                        <small class="text-muted"><i class="bi bi-building me-1"></i><%= b.Tamu.unit_kerja %></small>
+                      </div>
+                    </div>
+                  <% } else { %>
+                    <span class="text-muted">-</span>
+                  <% } %>
+                </td>
+                <td>
+                  <div class="fw-medium text-dark" style="max-width: 380px; line-height: 1.35;">
+                    <%= b.perihal %>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge badge-soft-info px-2 py-1">
+                    <i class="bi bi-geo-alt-fill me-1"></i><%= b.tujuan %>
+                  </span>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1 text-secondary small">
+                    <i class="bi bi-person-circle text-muted"></i>
+                    <span><%= b.penerima || 'Petugas FO' %></span>
+                  </div>
+                </td>
+                <td class="text-end pe-3 text-nowrap">
+                  <div class="btn-group btn-group-sm">
+                    <a href="/transaksi-berkas/<%= b.id %>/cetak" target="_blank" class="btn btn-outline-success py-1 px-2 d-inline-flex align-items-center gap-1" title="Cetak 2 Rangkap (F4 Portrait)">
+                      <i class="bi bi-printer-fill"></i> Cetak
+                    </a>
+                    <form action="/transaksi-berkas/<%= b.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Hapus riwayat penyerahan berkas ini?')">
+                      <button type="submit" class="btn btn-outline-danger py-1 px-2" title="Hapus"><i class="bi bi-trash"></i></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="text-center text-muted py-5">
+                <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary opacity-50"></i>
+                Belum ada transaksi berkas fisik yang ditemukan.
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+      <div class="d-flex align-items-center justify-content-between p-3 border-top">
+        <small class="text-muted">Halaman <%= currentPage %> dari <%= totalPages %> (Total <%= totalCount %> transaksi berkas)</small>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="/transaksi-berkas?page=<%= currentPage - 1 %>&search=<%= search %>&tujuan=<%= tujuan %>">Sebelumnya</a>
+          </li>
+          <li class="page-item active">
+            <span class="page-link bg-success border-success"><%= currentPage %></span>
+          </li>
+          <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="/transaksi-berkas?page=<%= currentPage + 1 %>&search=<%= search %>&tujuan=<%= tujuan %>">Selanjutnya</a>
+          </li>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

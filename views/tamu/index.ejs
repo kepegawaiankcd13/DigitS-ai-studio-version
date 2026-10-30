@@ -1,0 +1,158 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<!-- Page Header -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <div class="d-flex align-items-center gap-2 mb-1">
+      <span class="badge bg-purple bg-opacity-10 text-purple fw-bold px-2 py-1 rounded" style="font-size: 0.75rem; background-color: #F3E8FF; color: #7E22CE;">
+        <i class="bi bi-people-fill me-1"></i> Front Office & Tamu
+      </span>
+      <h4 class="fw-bold mb-0 text-dark">Buku Tamu Front Office</h4>
+    </div>
+    <p class="text-muted small mb-0">Registrasi pengunjung, asal instansi/sekolah, dan riwayat penyerahan berkas fisik</p>
+  </div>
+  <div class="mt-3 mt-md-0 d-flex gap-2">
+    <a href="/tamu/create" class="btn btn-sm btn-primary-custom d-inline-flex align-items-center shadow-sm">
+      <i class="bi bi-person-plus-fill me-1.5"></i> Registrasi Tamu Baru
+    </a>
+  </div>
+</div>
+
+<!-- Search Bar -->
+<div class="card card-modern mb-4">
+  <div class="card-body p-3">
+    <form action="/tamu" method="GET" class="row g-2 align-items-center">
+      <div class="col-md-10">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-search"></i></span>
+          <input type="text" name="search" class="form-control border-start-0" placeholder="Cari nama tamu, asal sekolah/unit kerja, NIP, atau ID Tamu..." value="<%= search %>">
+        </div>
+      </div>
+      <div class="col-md-2 d-flex gap-1">
+        <button type="submit" class="btn btn-sm btn-dark w-100 fw-semibold">
+          <i class="bi bi-search me-1"></i> Cari
+        </button>
+        <% if (search) { %>
+          <a href="/tamu" class="btn btn-sm btn-outline-secondary" title="Reset Pencarian">
+            <i class="bi bi-x-circle"></i>
+          </a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Table Card -->
+<div class="card card-modern overflow-hidden">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-modern align-middle mb-0">
+        <thead>
+          <tr>
+            <th class="ps-3" style="width: 100px;">ID Tamu</th>
+            <th>Nama Pengunjung</th>
+            <th>NIP / Identitas</th>
+            <th>Jabatan & Pekerjaan</th>
+            <th>Asal Unit Kerja / Sekolah</th>
+            <th style="width: 150px;">Kontak / WA</th>
+            <th style="width: 100px;">Berkas</th>
+            <th class="text-end pe-3" style="width: 130px;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (items && items.length > 0) { %>
+            <% items.forEach(t => { %>
+              <tr>
+                <td class="ps-3">
+                  <span class="badge badge-soft-blue font-tabular" style="font-size: 0.725rem;">
+                    <%= t.id_tamu %>
+                  </span>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 32px; height: 32px; font-size: 0.8rem; font-weight: 700; background: linear-gradient(135deg, #2563EB, #1D4ED8);">
+                      <%= t.nama ? t.nama.charAt(0).toUpperCase() : 'T' %>
+                    </div>
+                    <div>
+                      <a href="/tamu/<%= t.id %>" class="fw-bold text-dark text-decoration-none d-block" style="font-size: 0.85rem;">
+                        <%= t.nama %>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+                <td class="font-tabular text-muted small">
+                  <%= t.nip && t.nip !== '-' ? t.nip : '-' %>
+                </td>
+                <td>
+                  <div class="text-dark fw-medium" style="font-size: 0.825rem;"><%= t.jabatan || '-' %></div>
+                  <small class="text-muted" style="font-size: 0.725rem;"><%= t.pekerjaan || '-' %></small>
+                </td>
+                <td>
+                  <span class="fw-semibold text-secondary" style="font-size: 0.825rem;"><%= t.unit_kerja || '-' %></span>
+                </td>
+                <td>
+                  <% if (t.no_kontak && t.no_kontak !== '-') { %>
+                    <% const cleanPhone = String(t.no_kontak).replace(/[^0-9]/g, ''); %>
+                    <% const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone; %>
+                    <a href="https://wa.me/<%= waPhone %>" target="_blank" class="btn btn-sm btn-outline-success py-0.5 px-2 d-inline-flex align-items-center gap-1 shadow-2xs font-tabular" style="font-size: 0.75rem;">
+                      <i class="bi bi-whatsapp"></i> <%= t.no_kontak %>
+                    </a>
+                  <% } else { %>
+                    <span class="text-muted small">-</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% const berkasCount = t.TransaksiBerkas ? t.TransaksiBerkas.length : 0; %>
+                  <span class="badge <%= berkasCount > 0 ? 'badge-soft-emerald' : 'badge-soft-slate' %> px-2 py-0.5 rounded-pill font-tabular" style="font-size: 0.7rem;">
+                    <%= berkasCount %> Berkas
+                  </span>
+                </td>
+                <td class="text-end pe-3 text-nowrap">
+                  <div class="btn-group btn-group-sm">
+                    <a href="/tamu/<%= t.id %>" class="btn btn-outline-primary py-1 px-2" title="Detail Profil & Riwayat">
+                      <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="/transaksi-berkas/create?tamuId=<%= t.id %>" class="btn btn-outline-success py-1 px-2" title="Terima Berkas dari Tamu Ini">
+                      <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                    <form action="/tamu/<%= t.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Hapus data tamu <%= t.nama %>?')">
+                      <button type="submit" class="btn btn-outline-danger py-1 px-2" title="Hapus"><i class="bi bi-trash"></i></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="8" class="text-center text-muted py-5">
+                <i class="bi bi-people fs-2 d-block mb-2 text-secondary opacity-50"></i>
+                Tidak ada data pengunjung / tamu yang sesuai.
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+      <div class="d-flex align-items-center justify-content-between p-3 border-top">
+        <small class="text-muted">Halaman <%= currentPage %> dari <%= totalPages %> (Total <%= totalCount %> tamu terdaftar)</small>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="/tamu?page=<%= currentPage - 1 %>&search=<%= search %>">Sebelumnya</a>
+          </li>
+          <li class="page-item active">
+            <span class="page-link bg-success border-success"><%= currentPage %></span>
+          </li>
+          <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="/tamu?page=<%= currentPage + 1 %>&search=<%= search %>">Selanjutnya</a>
+          </li>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

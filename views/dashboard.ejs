@@ -1,0 +1,375 @@
+<%- include('partials/header') %>
+<%- include('partials/sidebar') %>
+
+<!-- Hero Greeting Banner -->
+<div class="card border-0 mb-4 overflow-hidden position-relative" style="background: linear-gradient(135deg, #0F6B59 0%, #073B31 100%); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(15, 107, 89, 0.25);">
+  <div class="position-absolute end-0 top-0 bottom-0 opacity-10 d-none d-lg-block pe-4" style="pointer-events: none;">
+    <i class="bi bi-shield-check" style="font-size: 14rem; line-height: 1; transform: translate(15%, -10%);"></i>
+  </div>
+  
+  <div class="card-body p-4 p-lg-4 text-white position-relative z-1">
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge bg-white bg-opacity-20 text-white px-2.5 py-1 rounded-pill fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.04em;">
+            <i class="bi bi-patch-check-fill me-1 text-warning"></i> Sesi Aktif: <%= user.role %>
+          </span>
+          <span class="badge bg-white bg-opacity-20 text-white px-2.5 py-1 rounded-pill fw-semibold" style="font-size: 0.72rem;">
+            <i class="bi bi-calendar3 me-1"></i> Tahun Anggaran <%= tahun %>
+          </span>
+        </div>
+        <h3 class="fw-bold mb-1 text-white" style="letter-spacing: -0.02em;">
+          Selamat Datang, <%= user.nama_lengkap || user.username %>!
+        </h3>
+        <p class="text-white text-opacity-80 small mb-0" style="max-width: 600px; line-height: 1.45;">
+          Sistem Terpadu Penomoran Naskah Dinas, Buku Agenda Surat Masuk, Disposisi Pimpinan, dan Layanan Front Office Cabang Dinas Pendidikan Wilayah XIII Jawa Barat.
+        </p>
+      </div>
+
+      <div class="col-lg-4 text-lg-end">
+        <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+          <a href="/transaksi-surat/create" class="btn btn-light text-dark fw-bold btn-sm shadow-sm px-3 py-2 d-inline-flex align-items-center">
+            <i class="bi bi-hash text-success me-1.5 fs-6"></i> Ambil Nomor Surat
+          </a>
+          <a href="/transaksi-berkas/create" class="btn btn-outline-light fw-semibold btn-sm px-3 py-2 d-inline-flex align-items-center">
+            <i class="bi bi-file-earmark-plus me-1.5"></i> Terima Berkas
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 Key Performance Indicators (KPIs) -->
+<div class="row g-3 mb-4">
+  <!-- 1. Surat Masuk -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem; letter-spacing: 0.05em;">Surat Masuk (<%= tahun %>)</span>
+        <div class="stat-icon-wrapper" style="background: #EBF7F4; color: #0F6B59;">
+          <i class="bi bi-inbox-fill"></i>
+        </div>
+      </div>
+      <div class="fs-2 fw-bold text-dark font-tabular mb-2"><%= stats.totalSuratMasuk %></div>
+      <div class="d-flex align-items-center gap-1.5 flex-wrap">
+        <span class="badge badge-soft-emerald px-2 py-0.5 rounded" style="font-size: 0.725rem;">
+          <i class="bi bi-check-circle-fill me-1"></i><%= stats.suratSudahDisposisi %> Disposisi
+        </span>
+        <span class="badge badge-soft-amber px-2 py-0.5 rounded" style="font-size: 0.725rem;">
+          <i class="bi bi-clock-fill me-1"></i><%= stats.suratBelumDisposisi %> Menunggu
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Nomor Surat Keluar -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem; letter-spacing: 0.05em;">Surat Keluar / Nomor</span>
+        <div class="stat-icon-wrapper" style="background: #EFF6FF; color: #2563EB;">
+          <i class="bi bi-hash"></i>
+        </div>
+      </div>
+      <div class="fs-2 fw-bold text-dark font-tabular mb-2"><%= stats.totalSuratKeluar %></div>
+      <div class="d-flex align-items-center gap-1.5 flex-wrap">
+        <span class="badge badge-soft-emerald px-2 py-0.5 rounded" style="font-size: 0.725rem;">
+          <i class="bi bi-file-check-fill me-1"></i><%= stats.suratAktif %> Aktif
+        </span>
+        <span class="badge badge-soft-amber px-2 py-0.5 rounded" style="font-size: 0.725rem;">
+          <i class="bi bi-bookmark-fill me-1"></i><%= stats.suratBooking %> Booking
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Buku Tamu Terdata -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem; letter-spacing: 0.05em;">Buku Tamu Terdaftar</span>
+        <div class="stat-icon-wrapper" style="background: #F3E8FF; color: #7E22CE;">
+          <i class="bi bi-people-fill"></i>
+        </div>
+      </div>
+      <div class="fs-2 fw-bold text-dark font-tabular mb-2"><%= stats.totalTamu %></div>
+      <div class="d-flex align-items-center justify-content-between">
+        <span class="text-muted small" style="font-size: 0.75rem;">Total Pengunjung</span>
+        <a href="/tamu" class="text-decoration-none fw-bold small text-primary d-inline-flex align-items-center gap-1" style="font-size: 0.75rem;">
+          Buka Tamu <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Transaksi Berkas Fisik -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem; letter-spacing: 0.05em;">Transaksi Berkas Masuk</span>
+        <div class="stat-icon-wrapper" style="background: #FEF3C7; color: #D97706;">
+          <i class="bi bi-folder-check"></i>
+        </div>
+      </div>
+      <div class="fs-2 fw-bold text-dark font-tabular mb-2"><%= stats.totalTransaksiBerkas %></div>
+      <div class="d-flex align-items-center justify-content-between">
+        <span class="text-muted small" style="font-size: 0.75rem;">Berkas Fisik Meja FO</span>
+        <a href="/transaksi-berkas" class="text-decoration-none fw-bold small text-warning d-inline-flex align-items-center gap-1" style="font-size: 0.75rem;">
+          Lihat Berkas <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow Stages Banner -->
+<div class="card card-modern p-3 mb-4 bg-white">
+  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+    <div class="d-flex align-items-center gap-3">
+      <div class="rounded-circle d-flex align-items-center justify-content-center bg-light text-success" style="width: 40px; height: 40px; font-size: 1.25rem;">
+        <i class="bi bi-diagram-3-fill"></i>
+      </div>
+      <div>
+        <strong class="d-block text-dark" style="font-size: 0.875rem;">Alur Pelayanan Persuratan & Tamu KCD Wilayah XIII</strong>
+        <span class="text-muted small" style="font-size: 0.75rem;">Integrasi otomatis registrasi tamu, serah terima berkas, disposisi pimpinan, dan penerbitan nomor naskah dinas.</span>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <a href="/tamu/create" class="btn btn-sm btn-outline-custom">
+        <i class="bi bi-1-circle-fill text-muted me-1"></i> Registrasi Tamu
+      </a>
+      <a href="/transaksi-berkas/create" class="btn btn-sm btn-outline-custom">
+        <i class="bi bi-2-circle-fill text-muted me-1"></i> Terima Berkas
+      </a>
+      <a href="/surat-masuk" class="btn btn-sm btn-outline-custom">
+        <i class="bi bi-3-circle-fill text-muted me-1"></i> Lembar Disposisi
+      </a>
+      <a href="/transaksi-surat/create" class="btn btn-sm btn-outline-custom">
+        <i class="bi bi-4-circle-fill text-muted me-1"></i> Nomor Naskah
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Two-Column Recent Data Tables -->
+<div class="row g-4 mb-4">
+  <!-- Left Table: Recent Surat Masuk -->
+  <div class="col-lg-6">
+    <div class="card card-modern h-100 overflow-hidden">
+      <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle p-1.5 text-primary" style="background: #EBF7F4;">
+            <i class="bi bi-inbox-fill"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.925rem;">Surat Masuk Terkini</h6>
+            <span class="text-muted small" style="font-size: 0.72rem;">Agenda penerimaan surat dinas</span>
+          </div>
+        </div>
+        <a href="/surat-masuk" class="btn btn-sm btn-light border py-1 px-2.5 fw-semibold small text-dark" style="font-size: 0.75rem;">
+          Lihat Semua <i class="bi bi-chevron-right ms-0.5"></i>
+        </a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-modern align-middle mb-0">
+          <thead>
+            <tr>
+              <th style="width: 100px;">Tgl Terima</th>
+              <th>Pengirim & Perihal</th>
+              <th style="width: 110px;">Status</th>
+              <th class="text-end" style="width: 80px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (recentSuratMasuk && recentSuratMasuk.length > 0) { %>
+              <% recentSuratMasuk.forEach(s => { %>
+                <tr>
+                  <td class="font-tabular fw-semibold text-secondary" style="font-size: 0.8rem;">
+                    <%= s.tgl_terima %>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark text-truncate" style="max-width: 260px; font-size: 0.825rem;"><%= s.pengirim %></div>
+                    <div class="text-muted small text-truncate" style="max-width: 260px; font-size: 0.775rem;"><%= s.perihal %></div>
+                  </td>
+                  <td>
+                    <% if (s.status_disposisi == 1 || s.status_disposisi === true) { %>
+                      <span class="badge badge-soft-emerald px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">
+                        <i class="bi bi-check-circle-fill me-1"></i>Sudah
+                      </span>
+                    <% } else { %>
+                      <span class="badge badge-soft-amber px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">
+                        <i class="bi bi-clock-fill me-1"></i>Belum
+                      </span>
+                    <% } %>
+                  </td>
+                  <td class="text-end text-nowrap">
+                    <a href="/surat-masuk/<%= s.id %>/disposisi" class="btn btn-sm btn-outline-primary py-0.5 px-2" title="Disposisi Pimpinan">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <% if (s.file_pdf) { %>
+                      <a href="/uploads/surat_masuk/<%= s.file_pdf %>" target="_blank" class="btn btn-sm btn-outline-danger py-0.5 px-2" title="Lihat PDF">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4 small">Belum ada surat masuk di tahun <%= tahun %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Table: Recent Nomor Surat Keluar -->
+  <div class="col-lg-6">
+    <div class="card card-modern h-100 overflow-hidden">
+      <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle p-1.5 text-primary" style="background: #EFF6FF;">
+            <i class="bi bi-hash"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.925rem;">Nomor Surat Terakhir</h6>
+            <span class="text-muted small" style="font-size: 0.72rem;">Agenda penomoran naskah dinas</span>
+          </div>
+        </div>
+        <a href="/transaksi-surat" class="btn btn-sm btn-light border py-1 px-2.5 fw-semibold small text-dark" style="font-size: 0.75rem;">
+          Lihat Semua <i class="bi bi-chevron-right ms-0.5"></i>
+        </a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-modern align-middle mb-0">
+          <thead>
+            <tr>
+              <th style="width: 140px;">Nomor Surat</th>
+              <th>Perihal / Tanggal</th>
+              <th style="width: 90px;">Status</th>
+              <th class="text-end" style="width: 60px;">PDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (recentTransaksiSurat && recentTransaksiSurat.length > 0) { %>
+              <% recentTransaksiSurat.forEach(ts => { %>
+                <tr>
+                  <td>
+                    <span class="font-tabular fw-bold text-dark font-monospace text-nowrap" style="font-size: 0.78rem;">
+                      <%= ts.nomor_lengkap || ts.nomor_urut %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="fw-medium text-dark text-truncate" style="max-width: 250px; font-size: 0.825rem;">
+                      <%= ts.perihal || '(Tanpa perihal)' %>
+                    </div>
+                    <small class="text-muted font-tabular" style="font-size: 0.725rem;"><%= ts.tanggal_nomor %></small>
+                  </td>
+                  <td>
+                    <% if (ts.status === 'Aktif') { %>
+                      <span class="badge badge-soft-emerald px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">Aktif</span>
+                    <% } else { %>
+                      <span class="badge badge-soft-amber px-2 py-0.5 rounded-pill" style="font-size: 0.7rem;">Booking</span>
+                    <% } %>
+                  </td>
+                  <td class="text-end text-nowrap">
+                    <% if (ts.file_pdf) { %>
+                      <a href="/uploads/surat_masuk/<%= ts.file_pdf %>" target="_blank" class="btn btn-sm btn-outline-danger py-0.5 px-2" title="Unduh Berkas PDF">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    <% } else { %>
+                      <span class="text-muted small">-</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4 small">Belum ada data penomoran surat</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Full Width Bottom Table: Transaksi Penyerahan Berkas -->
+<div class="card card-modern overflow-hidden mb-4">
+  <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+    <div class="d-flex align-items-center gap-2">
+      <div class="rounded-circle p-1.5 text-warning" style="background: #FEF3C7;">
+        <i class="bi bi-folder-check"></i>
+      </div>
+      <div>
+        <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.925rem;">Penyerahan Berkas Terkini (Front Office)</h6>
+        <span class="text-muted small" style="font-size: 0.72rem;">Pencatatan berkas fisik masuk dengan bukti tanda terima 2 rangkap</span>
+      </div>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <a href="/transaksi-berkas/create" class="btn btn-sm btn-primary-custom py-1 px-2.5" style="font-size: 0.75rem;">
+        <i class="bi bi-plus-circle me-1"></i> Terima Berkas Baru
+      </a>
+      <a href="/transaksi-berkas" class="btn btn-sm btn-light border py-1 px-2.5 fw-semibold small text-dark" style="font-size: 0.75rem;">
+        Semua Berkas
+      </a>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-modern align-middle mb-0">
+      <thead>
+        <tr>
+          <th style="width: 120px;">Tgl Terima</th>
+          <th>Tamu & Asal Instansi</th>
+          <th>Perihal Dokumen</th>
+          <th style="width: 140px;">Tujuan Bagian</th>
+          <th style="width: 150px;">Petugas FO</th>
+          <th class="text-end" style="width: 100px;">Cetak Bukti</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (recentBerkas && recentBerkas.length > 0) { %>
+          <% recentBerkas.forEach(b => { %>
+            <tr>
+              <td class="font-tabular fw-semibold text-secondary" style="font-size: 0.8rem;">
+                <%= String(b.tgl_transaksi || '').substring(0, 10) %>
+              </td>
+              <td>
+                <div class="fw-bold text-dark" style="font-size: 0.825rem;"><%= b.Tamu ? b.Tamu.nama : '-' %></div>
+                <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-building me-1"></i><%= b.Tamu ? b.Tamu.unit_kerja : '-' %></small>
+              </td>
+              <td>
+                <div class="text-truncate fw-medium text-dark" style="max-width: 380px; font-size: 0.825rem;"><%= b.perihal %></div>
+              </td>
+              <td>
+                <span class="badge badge-soft-blue px-2 py-0.5 rounded" style="font-size: 0.72rem;"><%= b.tujuan %></span>
+              </td>
+              <td>
+                <span class="text-secondary small" style="font-size: 0.78rem;"><i class="bi bi-person me-1"></i><%= b.penerima %></span>
+              </td>
+              <td class="text-end text-nowrap">
+                <a href="/transaksi-berkas/<%= b.id %>/cetak" target="_blank" class="btn btn-sm btn-outline-success py-1 px-2.5 d-inline-flex align-items-center gap-1 shadow-2xs" style="font-size: 0.75rem;" title="Cetak Tanda Terima 2 Rangkap">
+                  <i class="bi bi-printer-fill"></i> Cetak
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4 small">Belum ada berkas fisik yang diserahkan</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,88 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+  <div>
+    <h4 class="fw-bold mb-1">Catat Surat Masuk Baru</h4>
+    <p class="text-muted small mb-0">Input dokumen surat dinas masuk untuk diagendakan dan didisposisikan</p>
+  </div>
+  <a href="/surat-masuk" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-3">
+  <div class="card-body p-4">
+    <form action="/surat-masuk" method="POST" enctype="multipart/form-data">
+      
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold small">Tanggal Diterima</label>
+          <input type="date" name="tgl_terima" class="form-control" value="<%= today %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold small">Tanggal Surat</label>
+          <input type="date" name="tgl_surat" class="form-control" value="<%= today %>" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Nomor Surat Asli</label>
+        <input type="text" name="nomor_surat" class="form-control" placeholder="Contoh: 420/123/Disdik/2026" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Asal / Instansi Pengirim</label>
+        <input type="text" name="pengirim" class="form-control" placeholder="Contoh: DINAS PENDIDIKAN PROVINSI JAWA BARAT" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Perihal / Isi Ringkas Surat</label>
+        <textarea name="perihal" class="form-control" rows="3" placeholder="Jelaskan isi pokok surat secara ringkas dan jelas..." required></textarea>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Tanggal Pelaksanaan (Bila Ada)</label>
+          <input type="text" name="tgl_pelaksanaan" class="form-control" placeholder="Contoh: 12 s/d 14 Maret 2026">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Tingkat Urgensi</label>
+          <select name="urgensi" class="form-select">
+            <option value="Biasa" selected>Biasa</option>
+            <option value="Penting">Penting</option>
+            <option value="Segera">Segera</option>
+            <option value="Amat Segera">Amat Segera</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Sifat Surat</label>
+          <select name="sifat" class="form-select">
+            <option value="Biasa" selected>Biasa</option>
+            <option value="Penting">Penting</option>
+            <option value="Konfidential">Konfidential</option>
+            <option value="Rahasia">Rahasia</option>
+            <option value="Sangat Rahasia">Sangat Rahasia</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold small">Unggah Berkas PDF Dokumen</label>
+        <input type="file" name="file_pdf" class="form-control" accept="application/pdf">
+        <div class="form-text small">Maksimal 25 MB format .pdf</div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="d-flex justify-content-end gap-2">
+        <a href="/surat-masuk" class="btn btn-light">Batal</a>
+        <button type="submit" class="btn btn-success px-4">
+          <i class="bi bi-save me-1"></i> Simpan Surat Masuk
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
